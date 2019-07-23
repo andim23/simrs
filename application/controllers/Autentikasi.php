@@ -9,17 +9,16 @@ class Autentikasi extends MY_Controller {
 		$this->load->model('autentikasi_model');
 	}
 
-	public function index()
+	public function login_page()
 	{
-		$this->load->view('layouts/header');
 		$this->load->view('autentikasi/login');
-		$this->load->view('layouts/footer');
 	}
 
 	public function login()
 	{
 		if (!$this->input->post()) {
 			echo "Method Not Allowed";
+			return;
 		}
 
 		$this->form_validation->set_rules('username', 'Username', 'required');
@@ -38,11 +37,27 @@ class Autentikasi extends MY_Controller {
 		$attempt = $this->autentikasi_model->login($credentials);
 
 		if ($attempt) {
+			$this->session->set_userdata($attempt);
 			return redirect('/', 'refresh');
 		}
 
 		$this->session->set_flashdata('error', 'Username atau password yang anda masukkan tidak ditemukan.');
-		return redirect('/autentikasi', 'refresh');
+		return redirect('/autentikasi/login', 'refresh');
+	}
+
+	public function logout()
+	{
+		if (!$this->input->post()) {
+			echo "Method Not Allowed";
+			return;
+		}
+
+		if (!$this->is_login()) {
+			$this->redirect_if_is_login();
+		}
+
+		$this->session->sess_destroy();
+		return redirect(base_url('autentikasi/logout'), 'refresh');
 	}
 
 }

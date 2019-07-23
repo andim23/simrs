@@ -7,10 +7,10 @@ class Autentikasi_model extends CI_Model {
 
 	public function login(array $credentials)
 	{
-		$result = $this->db->get_where($this->table, ['username' => $credentials['username']])->result();
+		$result = $this->db->get_where($this->table, ['username' => $credentials['username']])->row_array();
 
-		if (!empty($result) && password_verify($credentials['password'], $result[0]->password)) {
-			return true;
+		if (!empty($result) && password_verify($credentials['password'], $result['password'])) {
+			return $result;
 		}
 
 		return false;

@@ -5,7 +5,9 @@
 <div class="row mt-4 mb-5 pb-5">
 	<?php foreach ($semua_ruangan as $key => $s): ?>
 		<div class="col-md-6">
-			<div class="w-100 bg-light border" style="height: 150px;"></div>
+			<div class="w-100 bg-light border d-flex align-items-center justify-content-center position-relative" style="height: 180px;width: 100%;overflow: hidden;">
+				<img src="<?php echo base_url($s['nama_file']) ?>" class="position-absolute" style="height: 100%;">
+			</div>
 			<p class="h4 py-2"><?php echo $s['nama_ruangan']; ?></p>
 			<ul class="nav flex-column">
 				<?php foreach ($this->db->get_where('tb_kamar', ['id_ruangan' => $s['id_ruangan']])->result_array() as $key => $k): ?>
